@@ -81,16 +81,20 @@ public class FormBarang extends javax.swing.JFrame {
                 String Nol = "";
 
                 switch (AN.length()) {
-                    case 1 ->
+                    case 1:
                         Nol = "000";
-                    case 2 ->
+                        break;
+                    case 2:
                         Nol = "00";
-                    case 3 ->
+                        break;
+                    case 3:
                         Nol = "0";
-                    case 4 ->
+                        break;
+                    case 4:
                         Nol = "";
-                    default -> {
-                    }
+                        break;
+                    default:
+                        break;
                 }
 
                 txKode.setText("B" + Nol + AN);
