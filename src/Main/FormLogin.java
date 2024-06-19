@@ -160,7 +160,7 @@ public class FormLogin extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // Tombol Login | Masuk Ke Form Menu.
-        if (txUsername.getText().equals("") && txPassword.getPassword().equals("")) {
+        if (txUsername.getText().equals("") && txPassword.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Username & Password Diperlukan!");
         } else {
             try {
