@@ -1,7 +1,6 @@
 package Main;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 /**
@@ -167,12 +166,11 @@ public class FormLogin extends javax.swing.JFrame {
             try {
                 java.sql.Connection conn = (java.sql.Connection) Koneksi.getKoneksi();
                 java.sql.Statement stm = conn.createStatement();
-                java.sql.ResultSet sql = stm.executeQuery("SELECT * FROM tbl_login WHERE username='"
-                        + txUsername.getText()
-                        + "'and password='" + Arrays.toString(txPassword.getPassword()) + "'");
+                java.sql.ResultSet sql = stm.executeQuery("SELECT * FROM tbl_login WHERE username='" + txUsername.getText()
+                        + "' and password='" + txPassword.getText() + "'");
 
                 if (sql.next()) {
-                    if (txPassword.getPassword().equals(sql.getString("password"))) {
+                    if (txPassword.getText().equals(sql.getString("password"))) {
                         JOptionPane.showMessageDialog(null, "Login Berhasil");
 
                         this.dispose();
