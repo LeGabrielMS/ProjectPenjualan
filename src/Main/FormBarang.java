@@ -26,11 +26,11 @@ public class FormBarang extends javax.swing.JFrame {
         model = new DefaultTableModel();
         tabelBarang.setModel(model);
 
-        model.addColumn("kd_barang");
-        model.addColumn("nama_barang");
-        model.addColumn("jumlah_barang");
-        model.addColumn("harga_beli");
-        model.addColumn("harga_jual");
+        model.addColumn("Kode Barang");
+        model.addColumn("Nama Barang");
+        model.addColumn("Jumlah Barang");
+        model.addColumn("Harga Beli");
+        model.addColumn("Harga Jual");
         loadData();
         kode();
 
@@ -343,7 +343,7 @@ public class FormBarang extends javax.swing.JFrame {
                 || txJumlah.getText().equals("")
                 || txBeli.getText().equals("")
                 || txJual.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Lengkapi Data!", "Elektronik Berkah", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Lengkapi Data!", "Aplikasi Penjualan", JOptionPane.INFORMATION_MESSAGE);
         } else {
             String kBarang = txKode.getText();
             String nBarang = txNama.getText();
@@ -358,8 +358,8 @@ public class FormBarang extends javax.swing.JFrame {
                 String tgl = date.toString();
                 Connection conn = Koneksi.getKoneksi();
                 String sql = "INSERT INTO tbl_barang VALUES(?,?,?,?,?,?)";
+                
                 PreparedStatement ps = conn.prepareStatement(sql);
-
                 ps.setString(1, kBarang);
                 ps.setString(2, nBarang);
                 ps.setString(3, jBarang);
@@ -379,7 +379,7 @@ public class FormBarang extends javax.swing.JFrame {
                 txBeli.setText("");
                 txJual.setText("");
 
-                JOptionPane.showMessageDialog(null, "Data Berhasil Tersimpan", "Elektronik Berkah", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Data Berhasil Tersimpan", "Aplikasi Penjualan", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnSimpanActionPerformed
@@ -388,8 +388,8 @@ public class FormBarang extends javax.swing.JFrame {
         // Tombol Hapus Data Pada Tabel.
         try {
             String sql = "DELETE FROM tbl_barang WHERE kd_barang='" + txKode.getText() + "'";
-            java.sql.Connection conn = (Connection) Koneksi.getKoneksi();
-            java.sql.PreparedStatement ps = conn.prepareStatement(sql);
+            Connection conn = (Connection) Koneksi.getKoneksi();
+            PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.execute();
             JOptionPane.showMessageDialog(this, "Berhasil Di Hapus");
@@ -411,7 +411,7 @@ public class FormBarang extends javax.swing.JFrame {
                 || txJumlah.getText().equals("")
                 || txBeli.getText().equals("")
                 || txJual.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Lengkapi Data!", "Elektronik Berkah", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Lengkapi Data!", "Aplikasi Penjualan", JOptionPane.INFORMATION_MESSAGE);
         } else {
             int i = tabelBarang.getSelectedRow();
             if (i == -1) {
@@ -440,7 +440,7 @@ public class FormBarang extends javax.swing.JFrame {
                 txBeli.setText("");
                 txJual.setText("");
                 btnSimpan.setEnabled(true);
-                JOptionPane.showMessageDialog(null, "Data Berhasil Diubah", "Elektronik Berkah", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Data Berhasil Diubah", "Aplikasi Penjualan", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnEditActionPerformed

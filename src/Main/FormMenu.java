@@ -34,7 +34,9 @@ public class FormMenu extends javax.swing.JFrame {
         menuLaporan = new javax.swing.JMenu();
         itemLaporanStok = new javax.swing.JMenuItem();
         itemLaporanPenjualan = new javax.swing.JMenuItem();
-        menuLogout = new javax.swing.JMenu();
+        menuHelp = new javax.swing.JMenu();
+        itemAbout = new javax.swing.JMenuItem();
+        itemLogout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,17 +115,27 @@ public class FormMenu extends javax.swing.JFrame {
 
         jMenuBar1.add(menuLaporan);
 
-        menuLogout.setText("Logout");
-        menuLogout.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                menuLogoutMenuSelected(evt);
+        menuHelp.setText("Help");
+
+        itemAbout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        itemAbout.setText("About");
+        itemAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemAboutActionPerformed(evt);
             }
         });
-        jMenuBar1.add(menuLogout);
+        menuHelp.add(itemAbout);
+
+        itemLogout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        itemLogout.setText("Logout");
+        itemLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemLogoutActionPerformed(evt);
+            }
+        });
+        menuHelp.add(itemLogout);
+
+        jMenuBar1.add(menuHelp);
 
         setJMenuBar(jMenuBar1);
 
@@ -163,12 +175,19 @@ public class FormMenu extends javax.swing.JFrame {
         fp.setVisible(true);
     }//GEN-LAST:event_itemPenjualanActionPerformed
 
-    private void menuLogoutMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuLogoutMenuSelected
+    private void itemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAboutActionPerformed
+        // Memanggil Form About.
+        FormAbout fa = new FormAbout();
+        this.dispose();
+        fa.setVisible(true);
+    }//GEN-LAST:event_itemAboutActionPerformed
+
+    private void itemLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemLogoutActionPerformed
         // Tombol Kembali Ke Login.
         FormLogin fl = new FormLogin();
         this.dispose();
         fl.setVisible(true);
-    }//GEN-LAST:event_menuLogoutMenuSelected
+    }//GEN-LAST:event_itemLogoutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -207,16 +226,18 @@ public class FormMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem itemAbout;
     private javax.swing.JMenuItem itemBarang;
     private javax.swing.JMenuItem itemLaporanPenjualan;
     private javax.swing.JMenuItem itemLaporanStok;
+    private javax.swing.JMenuItem itemLogout;
     private javax.swing.JMenuItem itemPegawai;
     private javax.swing.JMenuItem itemPenjualan;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenu menuHelp;
     private javax.swing.JMenu menuLaporan;
-    private javax.swing.JMenu menuLogout;
     private javax.swing.JMenu menuMaster;
     private javax.swing.JMenu menuTransaksi;
     // End of variables declaration//GEN-END:variables

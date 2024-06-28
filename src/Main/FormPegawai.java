@@ -1,10 +1,21 @@
 package Main;
 
+import java.awt.HeadlessException;
+import javax.swing.table.DefaultTableModel;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Gabriel Marcellino Sinurat - 22552011043
  */
 public class FormPegawai extends javax.swing.JFrame {
+
+    private DefaultTableModel model;
 
     /**
      * Creates new form FormPegawai
@@ -12,6 +23,60 @@ public class FormPegawai extends javax.swing.JFrame {
     public FormPegawai() {
         initComponents();
         setTitle("Form Data Pegawai");
+        model = new DefaultTableModel();
+        tabelPegawai.setModel(model);
+
+        model.addColumn("Username");
+        model.addColumn("Password");
+        model.addColumn("Jenis Kelamin");
+        model.addColumn("E-mail");
+        model.addColumn("No. Telepon");
+        model.addColumn("Agama");
+        model.addColumn("Alamat");
+        loadData();
+    }
+
+    public final void loadData() {
+        btnTambah.setEnabled(true);
+        btnHapus.setEnabled(false);
+        btnUbah.setEnabled(false);
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+
+        try {
+            Connection conn = Koneksi.getKoneksi();
+            Statement st = conn.createStatement();
+
+            String sql = "SELECT * FROM tbl_login";
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                Object[] o = new Object[7];
+                o[0] = rs.getString("username");
+                o[1] = rs.getString("password");
+                o[2] = rs.getString("jenis_kelamin");
+                o[3] = rs.getString("email");
+                o[4] = rs.getString("no_telepon");
+                o[5] = rs.getString("agama");
+                o[6] = rs.getString("alamat");
+
+                model.addRow(o);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException e) {
+            System.out.println("Kesalahan Pada Load Data\n " + e);
+        }
+    }
+
+    public void clear() {
+        txUsername.setText("");
+        txPassword.setText("");
+        txRetype.setText("");
+        buttonGroup1.clearSelection();
+        txEmail.setText("");
+        txTelp.setText("");
+        txAlamat.setText("");
     }
 
     /**
@@ -42,14 +107,14 @@ public class FormPegawai extends javax.swing.JFrame {
         txTelp = new javax.swing.JTextField();
         cbAgama = new javax.swing.JComboBox<>();
         txAlamat = new javax.swing.JTextField();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        rbLaki = new javax.swing.JRadioButton();
+        rbPerempuan = new javax.swing.JRadioButton();
         txEmail = new javax.swing.JTextField();
         btnTambah = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
         btnUbah = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblPegawai = new javax.swing.JTable();
+        tabelPegawai = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -114,19 +179,34 @@ public class FormPegawai extends javax.swing.JFrame {
 
         cbAgama.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Islam", "Protestan", "Katolik", "Hindu", "Buddha", "Khonghucu" }));
 
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setText("Laki-laki");
+        buttonGroup1.add(rbLaki);
+        rbLaki.setText("Laki-laki");
 
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("Perempuan");
+        buttonGroup1.add(rbPerempuan);
+        rbPerempuan.setText("Perempuan");
 
         btnTambah.setText("Tambah");
+        btnTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahActionPerformed(evt);
+            }
+        });
 
         btnHapus.setText("Hapus");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
 
         btnUbah.setText("Ubah");
+        btnUbah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUbahActionPerformed(evt);
+            }
+        });
 
-        tblPegawai.setModel(new javax.swing.table.DefaultTableModel(
+        tabelPegawai.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -137,7 +217,12 @@ public class FormPegawai extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tblPegawai);
+        tabelPegawai.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelPegawaiMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabelPegawai);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -155,9 +240,9 @@ public class FormPegawai extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jRadioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(rbLaki, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jRadioButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(rbPerempuan, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(txPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(jPanel2Layout.createSequentialGroup()
@@ -219,8 +304,8 @@ public class FormPegawai extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(jRadioButton1)
-                            .addComponent(jRadioButton2))
+                            .addComponent(rbLaki)
+                            .addComponent(rbPerempuan))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
@@ -259,6 +344,166 @@ public class FormPegawai extends javax.swing.JFrame {
         this.dispose();
         fm.setVisible(true);
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        // Menambahkan Data Ke Tabel.
+        var username = txUsername.getText().trim();
+        var pass = txPassword.getText().trim();
+        var konfPass = txRetype.getText().trim();
+        String jenisKelamin;
+        var email = txEmail.getText();
+        var noTelp = txTelp.getText();
+        var agama = cbAgama.getSelectedItem().toString();
+        var alamat = txAlamat.getText();
+
+        if (rbLaki.isSelected()) {
+            jenisKelamin = rbLaki.getText();
+        } else {
+            jenisKelamin = rbPerempuan.getText();
+        }
+
+        if (!pass.equals(konfPass)) {
+            JOptionPane.showMessageDialog(null, "Konfirmasi Password Salah!", "Aplikasi Penjualan", JOptionPane.INFORMATION_MESSAGE);
+        } else if (txUsername.getText().equals("")
+                || txPassword.getText().equals("")
+                || txRetype.getText().equals("")
+                || txEmail.getText().equals("")
+                || txTelp.getText().equals("")
+                || txAlamat.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Lengkapi Data!", "Aplikasi Penjualan", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            try {
+                Connection conn = Koneksi.getKoneksi();
+                String sql = "INSERT INTO tbl_login VALUES(?, ?, ?, ?, ?, ?, ?)";
+
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setString(1, username);
+                ps.setString(2, pass);
+                ps.setString(3, jenisKelamin);
+                ps.setString(4, email);
+                ps.setString(5, noTelp);
+                ps.setString(6, agama);
+                ps.setString(7, alamat);
+                ps.executeUpdate();
+                ps.close();
+
+            } catch (SQLException e) {
+                System.out.println("Kesalahan Pada Input Data:\n " + e);
+            } finally {
+                loadData();
+                clear();
+
+                JOptionPane.showMessageDialog(null, "Data Berhasil Tersimpan", "Aplikasi Penjualan", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+
+    }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        // Menghapus Data Pada Tabel.
+        try {
+            String sql = "DELETE FROM tbl_login WHERE username='" + txUsername.getText() + "'";
+            Connection conn = Koneksi.getKoneksi();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.execute();
+            JOptionPane.showMessageDialog(this, "Data Berhasil Di Hapus");
+        } catch (HeadlessException | SQLException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+        loadData();
+        clear();
+        txUsername.setEnabled(true);
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
+        // Edit Data Pada Tabel.   
+        var pass = txPassword.getText().trim();
+        var konfPass = txRetype.getText().trim();
+
+        if (!pass.equals(konfPass)) {
+            JOptionPane.showMessageDialog(null, "Konfirmasi Password Salah!", "Aplikasi Penjualan", JOptionPane.INFORMATION_MESSAGE);
+        } else if (txUsername.getText().equals("")
+                || txPassword.getText().equals("")
+                || txRetype.getText().equals("")
+                || txEmail.getText().equals("")
+                || txTelp.getText().equals("")
+                || txAlamat.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Lengkapi Data!", "Aplikasi Penjualan", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            int i = tabelPegawai.getSelectedRow();
+            if (i == -1) {
+                return;
+            }
+            String username = (String) model.getValueAt(i, 0);
+            try {
+                Connection conn = Koneksi.getKoneksi();
+                String jenisKelamin;
+
+                if (rbLaki.isSelected()) {
+                    jenisKelamin = rbLaki.getText();
+                } else {
+                    jenisKelamin = rbPerempuan.getText();
+                }
+                String sql = "UPDATE tbl_login SET password='" + txPassword.getText()
+                        + "',jenis_kelamin='" + jenisKelamin
+                        + "',email='" + txEmail.getText()
+                        + "',no_telepon='" + txTelp.getText()
+                        + "',agama='" + cbAgama.getSelectedItem().toString()
+                        + "',alamat='" + txAlamat.getText()
+                        + "'WHERE username='" + txUsername.getText() + "'";
+
+                PreparedStatement ps = conn.prepareCall(sql);
+                ps.executeUpdate();
+                ps.close();
+            } catch (SQLException e) {
+                System.out.println("Terjadi Error Pada Edit:\n " + e);
+            } finally {
+                loadData();
+                clear();
+                btnTambah.setEnabled(true);
+                JOptionPane.showMessageDialog(null, "Data Berhasil Diubah", "Aplikasi Penjualan", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnUbahActionPerformed
+
+    private void tabelPegawaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelPegawaiMouseClicked
+        // Menampilkan Data Pada Row Tabel Yang Dipilih.
+        btnTambah.setEnabled(false);
+        btnHapus.setEnabled(true);
+        btnUbah.setEnabled(true);
+        int i = tabelPegawai.getSelectedRow();
+        if (i == -1) {
+            return;
+        }
+
+        String username = (String) model.getValueAt(i, 0);
+        txUsername.setText(username);
+        txUsername.setEnabled(false);
+
+        String password = (String) model.getValueAt(i, 1);
+        txPassword.setText(password);
+
+        String jenisKelamin = (String) model.getValueAt(i, 2);
+        String l = "Laki-laki";
+        if (jenisKelamin.equals(l)) {
+            rbLaki.setSelected(true);
+        } else {
+            rbPerempuan.setSelected(true);
+        }
+
+        String email = (String) model.getValueAt(i, 3);
+        txEmail.setText(email);
+
+        String noTelp = (String) model.getValueAt(i, 4);
+        txTelp.setText(noTelp);
+
+        String agama = (String) model.getValueAt(i, 5);
+        cbAgama.setSelectedItem(agama);
+
+        String alamat = (String) model.getValueAt(i, 6);
+        txAlamat.setText(alamat);
+    }//GEN-LAST:event_tabelPegawaiMouseClicked
 
     /**
      * @param args the command line arguments
@@ -314,10 +559,10 @@ public class FormPegawai extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblPegawai;
+    private javax.swing.JRadioButton rbLaki;
+    private javax.swing.JRadioButton rbPerempuan;
+    private javax.swing.JTable tabelPegawai;
     private javax.swing.JTextField txAlamat;
     private javax.swing.JTextField txEmail;
     private javax.swing.JPasswordField txPassword;
