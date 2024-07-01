@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
  */
 public class FormPegawai extends javax.swing.JFrame {
 
-    private DefaultTableModel model;
+    private final DefaultTableModel model;
 
     /**
      * Creates new form FormPegawai
@@ -534,10 +534,8 @@ public class FormPegawai extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FormPegawai().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new FormPegawai().setVisible(true);
         });
     }
 

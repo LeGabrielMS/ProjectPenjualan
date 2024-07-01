@@ -197,7 +197,7 @@ public class FormLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // Batalkan Login..?
+        // Batalkan Login.
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
@@ -230,10 +230,8 @@ public class FormLogin extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FormLogin().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new FormLogin().setVisible(true);
         });
     }
 

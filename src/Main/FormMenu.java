@@ -1,5 +1,10 @@
 package Main;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 /**
  *
  * @author Gabriel Marcellino Sinurat - 22552011043
@@ -32,7 +37,7 @@ public class FormMenu extends javax.swing.JFrame {
         menuTransaksi = new javax.swing.JMenu();
         itemPenjualan = new javax.swing.JMenuItem();
         menuLaporan = new javax.swing.JMenu();
-        itemLaporanStok = new javax.swing.JMenuItem();
+        itemLaporanData = new javax.swing.JMenuItem();
         itemLaporanPenjualan = new javax.swing.JMenuItem();
         menuHelp = new javax.swing.JMenu();
         itemAbout = new javax.swing.JMenuItem();
@@ -105,12 +110,22 @@ public class FormMenu extends javax.swing.JFrame {
 
         menuLaporan.setText("Laporan");
 
-        itemLaporanStok.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_DOWN_MASK));
-        itemLaporanStok.setText("Laporan Stok Barang");
-        menuLaporan.add(itemLaporanStok);
+        itemLaporanData.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_DOWN_MASK));
+        itemLaporanData.setText("Laporan Data Barang");
+        itemLaporanData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemLaporanDataActionPerformed(evt);
+            }
+        });
+        menuLaporan.add(itemLaporanData);
 
         itemLaporanPenjualan.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_DOWN_MASK));
         itemLaporanPenjualan.setText("Laporan Penjualan");
+        itemLaporanPenjualan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemLaporanPenjualanActionPerformed(evt);
+            }
+        });
         menuLaporan.add(itemLaporanPenjualan);
 
         jMenuBar1.add(menuLaporan);
@@ -189,6 +204,26 @@ public class FormMenu extends javax.swing.JFrame {
         fl.setVisible(true);
     }//GEN-LAST:event_itemLogoutActionPerformed
 
+    private void itemLaporanDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemLaporanDataActionPerformed
+        // Mencetak Form Laporan Stok Barang.
+        try {
+            Desktop.getDesktop().browse(new URL("http://localhost/ProjectPenjualanPHP/LaporanDataBarang.php").toURI());
+            
+        } catch (IOException | URISyntaxException e) {
+            System.out.println("Terjadi Error (MenuItem Laporan Data Barang)" + e);
+        }
+    }//GEN-LAST:event_itemLaporanDataActionPerformed
+
+    private void itemLaporanPenjualanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemLaporanPenjualanActionPerformed
+        // Mencetak Laporan Penjualan.
+        try {
+            Desktop.getDesktop().browse(new URL("http://localhost/ProjectPenjualanPHP/LaporanPenjualan.php").toURI());
+            
+        } catch (IOException | URISyntaxException e) {
+            System.out.println("Terjadi Error (MenuItem Laporan Penjualan)" + e);
+        }
+    }//GEN-LAST:event_itemLaporanPenjualanActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -218,18 +253,16 @@ public class FormMenu extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FormMenu().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new FormMenu().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem itemAbout;
     private javax.swing.JMenuItem itemBarang;
+    private javax.swing.JMenuItem itemLaporanData;
     private javax.swing.JMenuItem itemLaporanPenjualan;
-    private javax.swing.JMenuItem itemLaporanStok;
     private javax.swing.JMenuItem itemLogout;
     private javax.swing.JMenuItem itemPegawai;
     private javax.swing.JMenuItem itemPenjualan;

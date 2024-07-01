@@ -22,7 +22,7 @@ public class FormPenjualan extends javax.swing.JFrame {
     public Statement st;
     Connection conn = Koneksi.getKoneksi();
 
-    private DefaultTableModel model;
+    private final DefaultTableModel model;
 
     /**
      * Creates new form FormPenjualan
@@ -388,6 +388,8 @@ public class FormPenjualan extends javax.swing.JFrame {
 
         txStok.setEditable(false);
 
+        txGetNoFak.setEditable(false);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -727,11 +729,15 @@ public class FormPenjualan extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSelesaiActionPerformed
 
     private void btnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakActionPerformed
-        // TODO add your handling code here:
+        // Membuat Faktur Penjualan
         try {
-            Desktop.getDesktop().browse(new URL("http://localhost:81/PenjualanBarang/invoice.php?lap&fk=" + txGetNoFak.getText() + "").toURI());
+            String baseURL = "http://localhost/ProjectPenjualanPHP/Invoice.php?lap&fk=";
+            String noFak = txGetNoFak.getText();
+            URL url = new URL(baseURL + noFak);
+            Desktop.getDesktop().browse(url.toURI());
+
         } catch (IOException | URISyntaxException e) {
-            System.out.println(e);
+            System.out.println("Terjadi Error (Button Cetak): " + e);
         }
     }//GEN-LAST:event_btnCetakActionPerformed
 
@@ -783,10 +789,8 @@ public class FormPenjualan extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FormPenjualan().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new FormPenjualan().setVisible(true);
         });
     }
 

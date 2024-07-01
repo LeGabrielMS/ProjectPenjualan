@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FormBarang extends javax.swing.JFrame {
 
-    private DefaultTableModel model;
+    private final DefaultTableModel model;
 
     /**
      * Creates new form FormBarang
@@ -532,10 +532,8 @@ public class FormBarang extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FormBarang().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new FormBarang().setVisible(true);
         });
     }
 
